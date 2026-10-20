@@ -1,0 +1,20 @@
+[project]
+name = "ai-integrator-course"
+version = "0.1.0"
+description = "AI Integrator course: lessons and exercises"
+readme = "README.md"
+authors = [
+    { name = "agumnik-dev", email = "agumnik.dev@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "anthropic>=1.15.0",
+    "pydantic>=2.14.1",
+    "python-dotenv>=1.2.4",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+    "ruff>=0.17.1",
+]
