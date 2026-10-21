@@ -29,7 +29,7 @@ hello_claude.py — урок 0: первый вызов Claude API.
     Всё остальное в файле — обвязка: проверка ключа и аргументов, ошибки API.
 
 ЗАПУСК
-    uv run python 00-setup/hello_claude.py "Что такое MCP? Два предложения."
+    uv run python -m lesson_00.code.hello_claude "Что такое MCP? Два предложения."
 """
 
 import sys
@@ -69,7 +69,7 @@ def main() -> int:
 
     # check right arguments
     if len(sys.argv) < 2:
-        print('Using: uv run python 00-setup/hello_claude.py "your question"')
+        print('Using: uv run python -m lesson_00.code.hello_claude "your question"')
         sys.exit(1)
 
     question = sys.argv[1]
