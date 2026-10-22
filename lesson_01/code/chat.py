@@ -4,16 +4,8 @@ import sys
 
 from common.llm import get_client, estimate_cost, warn_if_truncated
 
-DEFAULT_MODEL = "claude-haiku-5-5"
 MODEL = "claude-haiku-5-5"  # cheapest model for learinng
 MAX_TOKENS = 1000  # max response length
-
-# USD per 1M tokens: (input, output). Check https://claude.com/pricing before use.
-# Note: Haiku 5.5 charges more for prompts over 100K tokens; ignored here.
-PRICES: dict[str, tuple[float, float]] = {
-    "claude-haiku-5-5": (0.10, 0.50),
-}
-
 SYSTEM = """You are a support assistant of "Shomer" insurance company.
 - Answer in the user's language (Hebrew, Russian or English).
 - Be brief: 2-4 sentences.
