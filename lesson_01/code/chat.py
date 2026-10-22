@@ -78,8 +78,8 @@ def main() -> int:
         # Generate the bot's response
         reply = create_bot_response(client, user_input)
 
-        # calculate estimate costs
-        turn_cost = estimate_cost(reply.usage)
+        # calculate estimate costs by model
+        turn_cost = estimate_cost(reply.usage, MODEL)
         total_cost += turn_cost
         print(f"     [in {reply.usage.input_tokens} | out {reply.usage.output_tokens} "
               f"| turn ${turn_cost:.6f} | total ${total_cost:.6f}]")
