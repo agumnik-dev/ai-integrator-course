@@ -6,6 +6,7 @@ Usage (run from the course root):
 """
 
 import os
+import re
 import sys
 
 import anthropic
@@ -41,6 +42,12 @@ def estimate_cost(usage: Usage, model: str = DEFAULT_MODEL) -> float:
         raise ValueError(f"No price for model {model!r}. Add it to PRICES in common/llm.py.")
     price_in, price_out = PRICES[model]
     return (usage.input_tokens * price_in + usage.output_tokens * price_out) / 1_000_000
+
+
+def extract_tag(text: str, tag: str) -> str | None:
+    """Return the content of the first <tag>...</tag> in text (stripped), or None if absent."""
+    match = re.search(rf"<{tag}>(.*?)</{tag}>", text, re.DOTALL)
+    return match.group(1).strip() if match else None
 
 
 def warn_if_truncated(message: Message) -> None:
