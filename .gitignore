@@ -13,3 +13,4 @@ wheels/
 
 # Lesson materials (local only)
 docs/
+*.csv
