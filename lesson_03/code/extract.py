@@ -95,6 +95,7 @@ def extract(client, email_text):
       model=MODEL,
       max_tokens=2000,
       system=SYSTEM_V2,
+      output_config={"effort": "low"},
       messages=[{"role": "user", "content": f"<email>{email_text}</email>"}],
       output_format=EmailInfo,           # NEW: the form to fill
   )
@@ -108,7 +109,7 @@ def evaluate(client, emails):
     cost = 0.0
 
     for email in emails:
-        reply = extract(client, email["text"])   # your function from step 1
+        reply = extract(client, email["text"])   # function from step 1
         info = reply.parsed_output
         if info.new_driver_age is not None and info.new_driver_age < 21:
           info.urgency = "high"
@@ -144,9 +145,6 @@ def save_csv(results):
 def main() -> int:
     client = get_client()
     emails = load_emails()
-    # for email in emails:
-    #     info = extract(client, email["text"]).parsed_output
-    #     print(email["id"], info)
 
     # evaluate some mail data
     results = evaluate(client, emails)
