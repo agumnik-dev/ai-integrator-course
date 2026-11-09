@@ -49,7 +49,6 @@ def ask(client, question: str) -> str:
             #   (Optional: before it, print the error for yourself: print(f"  [api error] {e}"))
             print(f"  [API error] {e}")
             return FALLBACK
-            # raise
 
         cost += estimate_cost(reply.usage, MODEL)
         messages.append({"role": "assistant", "content": reply.content})
@@ -74,14 +73,13 @@ def ask(client, question: str) -> str:
                     # TODO A (step 2): our function failed (e.g. the database is down).
                     #   Replace `raise` with a tool_result that tells the MODEL about the error.
                     #   It is the same dict as in the `try` block above, with two differences:
-                    print(f"[tool error] {block.name}: {e}")
+                    print(f"  [tool error] {block.name}: {e}")
                     results.append({
                         "type": "tool_result",
                         "tool_use_id": block.id,
                         "content": f"Error: {e}",      # the error text instead of the data
                         "is_error": True,              # NEW: marks this result as an error
                     })
-                    # raise
 
         messages.append({"role": "user", "content": results})
 
