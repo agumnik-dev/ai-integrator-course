@@ -1,0 +1,26 @@
+[
+  {
+    "claim_id": "CL-5521",
+    "policy_number": "88213",
+    "opened": "2026-10-08",
+    "type": "water damage",
+    "status": "waiting for appraiser",
+    "amount_ils": null
+  },
+  {
+    "claim_id": "CL-4980",
+    "policy_number": "88213",
+    "opened": "2025-03-14",
+    "type": "water damage",
+    "status": "paid",
+    "amount_ils": 3200
+  },
+  {
+    "claim_id": "CL-5610",
+    "policy_number": "4471-22",
+    "opened": "2026-10-31",
+    "type": "collision",
+    "status": "documents requested",
+    "amount_ils": null
+  }
+]
