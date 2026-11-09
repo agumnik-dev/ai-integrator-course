@@ -1,0 +1,83 @@
+{
+  "4471-22": {
+    "policy_number": "4471-22",
+    "type": "car",
+    "holder": "Daniel Levi",
+    "status": "active",
+    "valid_until": "2027-03-31",
+    "coverage": [
+      "collision",
+      "theft",
+      "third_party"
+    ],
+    "not_covered": [
+      "car glass (handled by partner Glassco, phone *2700)"
+    ],
+    "deductible_ils": 1500
+  },
+  "88213": {
+    "policy_number": "88213",
+    "type": "apartment",
+    "holder": "Noa Cohen",
+    "status": "active",
+    "valid_until": "2026-12-15",
+    "coverage": [
+      "water damage",
+      "fire",
+      "theft",
+      "third_party"
+    ],
+    "not_covered": [
+      "earthquake"
+    ],
+    "deductible_ils": 800
+  },
+  "5530-91": {
+    "policy_number": "5530-91",
+    "type": "car",
+    "holder": "Mark Green",
+    "status": "active",
+    "valid_until": "2026-11-20",
+    "coverage": [
+      "third_party"
+    ],
+    "not_covered": [
+      "collision",
+      "theft",
+      "car glass"
+    ],
+    "deductible_ils": 0
+  },
+  "22810": {
+    "policy_number": "22810",
+    "type": "car",
+    "holder": "Ronit Gabay",
+    "status": "active",
+    "valid_until": "2027-01-10",
+    "coverage": [
+      "collision",
+      "theft",
+      "third_party"
+    ],
+    "not_covered": [
+      "drivers under 21 unless approved"
+    ],
+    "deductible_ils": 2000
+  },
+  "77120": {
+    "policy_number": "77120",
+    "type": "apartment",
+    "holder": "Alexey Smirnov",
+    "status": "cancellation_requested",
+    "valid_until": "2026-12-01",
+    "coverage": [
+      "water damage",
+      "fire"
+    ],
+    "not_covered": [
+      "theft",
+      "earthquake"
+    ],
+    "deductible_ils": 1000
+  }
+}
