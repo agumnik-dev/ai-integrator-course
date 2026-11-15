@@ -1,0 +1,7 @@
+{
+  "inv_1": {"decision": "accept", "payout_ils": 2800},
+  "inv_2": {"decision": "adjuster", "payout_ils": null},
+  "inv_3": {"decision": "not_covered", "payout_ils": null},
+  "inv_4": {"decision": "ask_policy", "payout_ils": null},
+  "inv_5": {"decision": "not_covered", "payout_ils": null}
+}

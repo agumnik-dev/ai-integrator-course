@@ -1,8 +1,5 @@
 """Step 3: the model may call tools many times; we loop until it answers.
 
-Fill in the TODOs. Each one is 1-3 lines.
-Look at one_call.py: every TODO here repeats one of its steps.
-
 Run from the course root:
     uv run python -m lesson_04.code.agent "your question"
 """
@@ -43,13 +40,11 @@ def ask(client, question: str) -> str:
 
         # 2. Add the model's answer to the history: role "assistant", content = reply.content (whole).
         #    Same as the first messages.append(...) in step 4 of one_call.py.
-        # TODO (1 line)
         messages.append({"role": "assistant", "content": reply.content})
 
         # 3. If the model did NOT ask for a tool, this is the final answer.
         #    Check: reply.stop_reason != "tool_use"
         #    Then: print(f"  [{step + 1} model calls, ${cost:.4f}]") and return extract_text(reply)
-        # TODO (3 lines)
         if reply.stop_reason != "tool_use":
             print(f"  [{step + 1} model calls, ${cost:.4f}]")
             return extract_text(reply)
@@ -68,7 +63,6 @@ def ask(client, question: str) -> str:
 
                 # 4b. Add a tool_result block for this request to the results list.
                 #     Same dict as in step 4 of one_call.py, but with block.id and output.
-                # TODO (results.append({...}))
                 results.append({
                     "type": "tool_result",
                     "tool_use_id": block.id,
@@ -77,7 +71,6 @@ def ask(client, question: str) -> str:
 
         # 5. Send all results back to the model as ONE message with role "user".
         #    Same as the second messages.append(...) in step 4 of one_call.py, but content=results.
-        # TODO (1 line)
         messages.append({"role": "user", "content": results})
 
 
