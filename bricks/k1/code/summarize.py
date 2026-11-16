@@ -1,4 +1,4 @@
-"""Worked example for brick K1: essense of the letter in russian by one line
+"""Brick K1: summarize a customer email in one sentence in Russian.
 
 Run from the course root:
     uv run python -m bricks.k1.code.summarize bricks/k1/data/letter.txt
