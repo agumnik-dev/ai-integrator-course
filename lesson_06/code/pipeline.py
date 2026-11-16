@@ -43,7 +43,7 @@ REPLY_RULES = {
 
 
 def route(client, text: str) -> str:
-    """The model only names the category. Ready."""
+    """The model only names the category."""
     return ask_structured(client, ROUTER_SYSTEM, text, Route).category
 
 
@@ -131,12 +131,22 @@ def review(client, text: str, facts: Facts, rules: str, reply: str) -> tuple[str
 # ---------- Step 4. Parallel ----------
 
 def process_email(client, email: dict) -> dict:
-    """The whole pipeline for ONE email. Ready."""
+    """The whole pipeline for ONE email."""
+
+    # 1. route category
     category = route(client, email["text"])
+
+    # add code which check specific case
     if category == "other":  # routing to a person: no automatic reply
         return {"id": email["id"], "category": category, "status": "to a person", "reply": ""}
+
+    # create pipeline
     facts, rules, reply = chain(client, email["text"], pick_rules(category))
+
+    # review results
     reply, status = review(client, email["text"], facts, rules, reply)
+
+    # return result
     return {"id": email["id"], "category": category, "status": status, "reply": reply}
 
 
@@ -149,7 +159,7 @@ def run_all(client, parallel: bool) -> list[dict]:
         return list(pool.map(lambda email: process_email(client, email), EMAILS))
 
 
-# ---------- Modes: one per step. Ready. ----------
+# ---------- Modes: one per step. ----------
 
 def main() -> None:
     mode = sys.argv[1] if len(sys.argv) > 1 else ""

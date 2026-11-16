@@ -4,8 +4,6 @@ from common.llm import get_client, extract_text, extract_tag, estimate_cost
 from pathlib import Path
 
 MODEL = "claude-haiku-5-5"  
-PRICE_INPUT_PER_MTOK = 0.10 
-PRICE_OUTPUT_PER_MTOK = 0.50 
 MAX_TOKENS = 1000  
 
 SYSTEM_V1 = """Classify the customer email into one of: new_claim, claim_status,

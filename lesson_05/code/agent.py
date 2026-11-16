@@ -1,7 +1,5 @@
 """Lesson 5: the agent from lesson 4, made reliable.
 
-Fill in TODO A (step 2) and TODO B (step 3). Until then, `raise` lets errors crash the program.
-
 Run from the course root:
     uv run python -m lesson_05.code.agent "your question"
 """
@@ -44,9 +42,6 @@ def ask(client, question: str) -> str:
                 messages=messages,
             )
         except anthropic.APIError as e:
-            # TODO B (step 3): the API call failed even after the SDK's automatic retries.
-            #   Replace `raise` with ONE line that returns the polite message for the customer:
-            #   (Optional: before it, print the error for yourself: print(f"  [api error] {e}"))
             print(f"  [API error] {e}")
             return FALLBACK
 
@@ -70,9 +65,7 @@ def ask(client, question: str) -> str:
                         "content": json.dumps(output, ensure_ascii=False),
                     })
                 except Exception as e:
-                    # TODO A (step 2): our function failed (e.g. the database is down).
-                    #   Replace `raise` with a tool_result that tells the MODEL about the error.
-                    #   It is the same dict as in the `try` block above, with two differences:
+                    # our function failed (e.g. the database is down).
                     print(f"  [tool error] {block.name}: {e}")
                     results.append({
                         "type": "tool_result",
