@@ -23,7 +23,8 @@ If a value is not written in the email, return null. Never guess."""
 class CustomerLetter(BaseModel):
     customer_name: str | None = Field(description="Customer name")
     policy_number: str | None = Field(description="The policy number. Null if not written, never guess")
-    claim_number: str | None = Field(description="Our claim number, like CL-5610. Not an airline, police or other report number. Null if none.")
+    # claim_number: str | None = Field(description="Our claim number, like CL-5610. Not an airline, police or other report number. Null if none.")
+    claim_number: str | None = Field(description="Our claim number, like 5610. Not an airline, police or other report number. Null if none.")
     topic: Literal["new_claim", "claim_status", "coverage_question", "other"] = Field(
     description="new_claim: the customer reports a new event (accident, theft, loss), "
     "even if they also ask about coverage; "

@@ -1,0 +1,9 @@
+{
+  "letter.txt":              {"policy_number": "TR-20931", "claim_number": null,      "topic": "new_claim",         "language": "English"},
+  "letter_he.txt":           {"policy_number": "4471-22",  "claim_number": null,      "topic": "new_claim",         "language": "Hebrew"},
+  "letter_ru.txt":           {"policy_number": "4471-22",  "claim_number": "5610", "topic": "claim_status",      "language": "Russian"},
+  "letter_question.txt":     {"policy_number": null,       "claim_number": null,      "topic": "coverage_question", "language": "English"},
+  "letter_police.txt":       {"policy_number": "88213",    "claim_number": null,      "topic": "new_claim",         "language": "English"},
+  "letter_status_nonum.txt": {"policy_number": "22810",    "claim_number": null,      "topic": "claim_status",      "language": "Russian"},
+  "letter_rearend.txt":      {"policy_number": "22810",    "claim_number": null,      "topic": "new_claim",         "language": "Hebrew"}
+}
