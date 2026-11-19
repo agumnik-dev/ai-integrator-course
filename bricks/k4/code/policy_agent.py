@@ -32,7 +32,7 @@ GET_POLICY_TOOL = {
     "input_schema": {
         "type": "object",
         "properties": {
-            "policy_number": {"type": "string", "holder": "string", "status": "active", "valid_until": "date YYYY-MM-DD", "coverage": "list of options", "not_covered": "string", "deductible_ils": "number"},
+            "policy_number": {"type": "string", "description": "Policy number as written in the letter, e.g. 4471-22"},
         },
         "required": ["policy_number"],
     },
