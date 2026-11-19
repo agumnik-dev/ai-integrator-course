@@ -1,0 +1,22 @@
+[
+  {
+    "id": "inv_1",
+    "text": "Moshe Motors Ltd., Holon\nInvoice No. 5512, 2026-11-08\nCustomer: Daniel Levi, policy 4471-22\nCar: Mazda 3, plate 45-221-87\nWork: rear bumper replacement and paint after a collision in a parking lot\nParts: 2,150.00\nLabor: 1,494.07\nSubtotal: 3,644.07 ILS\nVAT 18%: 655.93 ILS\nTotal: 4,300.00 ILS"
+  },
+  {
+    "id": "inv_2",
+    "text": "Gabay Auto Center, Rishon LeZion\nInvoice No. 0931, 2026-11-07\nCustomer: Ronit Gabay, policy 22810\nCar: Toyota Corolla, plate 61-004-12\nWork: front-end repair after a collision: hood, radiator, both headlights, airbag replacement\nSubtotal: 15,635.59 ILS\nVAT 18%: 2,814.41 ILS\nTotal: 18,450.00 ILS"
+  },
+  {
+    "id": "inv_3",
+    "text": "Moshe Motors Ltd., Holon\nInvoice No. 5530, 2026-11-09\nCustomer: Daniel Levi, policy 4471-22\nCar: Mazda 3, plate 45-221-87\nWork: windshield replacement (crack from a stone on the highway)\nSubtotal: 1,779.66 ILS\nVAT 18%: 320.34 ILS\nTotal: 2,100.00 ILS"
+  },
+  {
+    "id": "inv_4",
+    "text": "Автосервис «Север», Хайфа\nСчёт № 1187 от 09.11.2026\nКлиент: Игорь Смирнов\nАвтомобиль: Kia Picanto, номер 12-345-67\nРабота: замена переднего левого крыла после столкновения\nИтого к оплате: 3 000,00 ₪ (включая НДС)"
+  },
+  {
+    "id": "inv_5",
+    "text": "מוסך הצפון, עפולה\nחשבונית מס' 2291, 10.11.2026\nלקוח: מרק גרין, פוליסה 5530-91\nרכב: יונדאי i20, מספר רישוי 33-781-09\nעבודה: תיקון דלת קדמית ימנית לאחר תאונה\nסה\"כ לתשלום: 6,800 ₪ כולל מע\"מ"
+  }
+]
