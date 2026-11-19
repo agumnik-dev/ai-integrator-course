@@ -1,0 +1,14 @@
+[
+  {
+    "id": "delta",
+    "text": "Delta Office Supplies Ltd.\nTax Invoice 88-1203, date 05.11.2026\nTo: Shibolet Trading Ltd.\nYour purchase order (PO): 4500012874\nItems: A4 paper x 40 boxes — 5,600.00\n       Toner HP 59A x 6 — 2,340.00\nSubtotal: 7,940.00 ILS\nVAT 18%: 1,429.20 ILS\nTotal: 9,369.20 ILS\nPayment terms: net 30"
+  },
+  {
+    "id": "tavor",
+    "text": "טבור מערכות מיזוג בע\"מ\nחשבונית מס 7781, 09.11.2026\nלכבוד: שיבולת סחר בע\"מ\nעבודה: החלפת מדחס במזגן המשרד\nסה\"כ לפני מע\"מ: 3,200.00 ₪\nמע\"מ 18%: 576.00 ₪\nסה\"כ לתשלום: 3,776.00 ₪"
+  },
+  {
+    "id": "galil",
+    "text": "Galil Coffee Ltd.\nInvoice 3302, date 12.11.2026\nTo: Shibolet Trading Ltd.\nPO: 4500013117\nCoffee beans 12 kg, cups 2,000 pcs\nSubtotal: 1,050.85 ILS\nVAT 18%: 189.15 ILS\nTotal: 1,240.00 ILS"
+  }
+]
