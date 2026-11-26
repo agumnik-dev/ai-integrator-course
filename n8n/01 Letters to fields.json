@@ -1,0 +1,184 @@
+{
+  "name": "01 Letters to fields",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "d5810856-e4ae-4a46-882e-5ac502c8cc77",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Four customer emails. Each object in the array becomes one item in n8n.\nreturn [\n  { json: { id: \"letter_1\", text: `Hello,\nI flew from Tel Aviv to Rome on 3 November with El Al, flight LY383. My suitcase did not arrive.\nThe airline confirmed in writing that it is lost (report ROM-LY-55821). Inside were clothes and a camera, total value about 6,500 ILS.\nI have a travel policy with you, number TR-20931. What documents do I need to send to get compensation?\nThanks,\nSergei Katz` } },\n  { json: { id: \"letter_2\", text: `Hi,\nI'm planning a trip to Thailand in December. Does my travel policy cover scuba diving?\nI don't remember my policy number.\nMichal Ben-Ami` } },\n  { json: { id: \"letter_3\", text: `Добрый день!\nДве недели назад я отправил вам все документы по жалобе CL-5610 (ремонт машины после столкновения): счёт из гаража, фотографии и протокол.\nС тех пор никто не ответил, а гараж требует оплату до конца месяца. Прошу сообщить, когда будет решение.\nДаниэль Леви, полис 4471-22` } },\n  { json: { id: \"letter_4\", text: `שלום,\nאתמול בלילה פרצו לרכב שלי בחניה ליד הבית ברמת גן וגנבו את המחשב הנייד מהמושב האחורי. החלון האחורי נשבר.\nהגשתי תלונה במשטרה. מספר הפוליסה שלי 4471-22. האם הביטוח מכסה גם את החלון וגם את המחשב?\nדניאל לוי` } },\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        0
+      ],
+      "id": "42c0bf23-77c1-4132-968e-13352362c3cf",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "text": "={{ $json.text }}",
+        "attributes": {
+          "attributes": [
+            {
+              "name": "customer_name",
+              "description": "Customer name as signed"
+            },
+            {
+              "name": "policy_number",
+              "description": "Insurance policy number exactly as written. Not a claim number like CL-5610, not a flight or police report number. Empty if not written."
+            },
+            {
+              "name": "topic",
+              "description": "One of: new_claim, claim_status, coverage_question, other. new_claim: reports a new event (accident, theft, loss) even if also asks about coverage; claim_status: asks about a claim already opened; coverage_question: asks what the policy covers, no new event",
+              "required": true
+            },
+            {
+              "name": "language",
+              "description": "One of: English, Russian, Hebrew, Other"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.informationExtractor",
+      "typeVersion": 1.2,
+      "position": [
+        448,
+        0
+      ],
+      "id": "c80042ce-d70c-4c85-b03f-0e3386d34158",
+      "name": "Information Extractor"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "claude-haiku-5-5",
+          "mode": "list",
+          "cachedResultName": "Claude Haiku 5.5"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.5,
+      "position": [
+        384,
+        208
+      ],
+      "id": "21303435-2a2a-4ac7-b735-7b4dc183636f",
+      "name": "Anthropic Chat Model",
+      "credentials": {
+        "anthropicApi": {
+          "id": "dkM3qYNlpB1sbEJK",
+          "name": "Anthropic account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "0780e1a1-2b93-4f5c-820e-7260721e8671",
+              "leftValue": "={{ $json.output.policy_number ?? \"\" }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        816,
+        0
+      ],
+      "id": "9aee5bde-cbdc-4b42-a07c-86604e94ce4f",
+      "name": "No policy number?"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Information Extractor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Information Extractor",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Information Extractor": {
+      "main": [
+        [
+          {
+            "node": "No policy number?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "7e3c4a1a-2f2c-4b7a-9596-c8d275f5b33e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0f3be1b21e9d7ac0c9038ef4777ded591b0e44acdbcf2fd9889167ece4127673"
+  },
+  "nodeGroups": [],
+  "id": "KfT5yPfSZNQHvl1u",
+  "tags": []
+}
