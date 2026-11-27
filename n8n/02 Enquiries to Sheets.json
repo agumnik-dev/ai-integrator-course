@@ -1,0 +1,504 @@
+{
+  "name": "02 Enquiries to Sheets",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -496,
+        -272
+      ],
+      "id": "978d58ed-1bb1-4212-a018-17471b51d130",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "limit": 10,
+        "simple": false,
+        "filters": {
+          "q": "from:argtrade@hotmail.com subject:test -label:processed "
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        -240,
+        -272
+      ],
+      "id": "3b46964f-2e72-4573-8acb-830ed5cb215a",
+      "name": "Get many messages",
+      "webhookId": "7a0dc9b1-a443-405c-bee1-19f22ae535e5",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "uyAjPR91JmMlCxAP",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c1f11fe2-5e32-40f8-8147-a591f0b1d804",
+              "name": "received",
+              "value": "={{ $json.date }}",
+              "type": "string"
+            },
+            {
+              "id": "190d5e0d-c45f-46e8-9851-ebb67010ef6f",
+              "name": "from",
+              "value": "={{ $json.from.value[0].address }}",
+              "type": "string"
+            },
+            {
+              "id": "80b0f375-ad7f-49b6-8010-a9af3e820b90",
+              "name": "subject",
+              "value": "={{ $json.subject }}",
+              "type": "string"
+            },
+            {
+              "id": "1bd5852b-197f-452c-ad30-858d1bf32c15",
+              "name": "text",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        16,
+        -272
+      ],
+      "id": "6efb3d97-32c8-41d6-a951-8ab75263e02d",
+      "name": "Keep 4 fields"
+    },
+    {
+      "parameters": {
+        "text": "={{ $json.text }}",
+        "attributes": {
+          "attributes": [
+            {
+              "name": "is_enquiry",
+              "type": "boolean",
+              "description": "True if the sender asks us for a price quote. False for invoices, payment notices, ads and anything else.",
+              "required": true
+            },
+            {
+              "name": "company",
+              "description": "Company name of the sender as written. Empty if not written"
+            },
+            {
+              "name": "contact_name",
+              "description": "Name of the person who wrote the email. Empty if not written."
+            },
+            {
+              "name": "items",
+              "description": "Requested products with quantities in one line, for example: 40 boxes A4 paper, 6 HP 59A toners."
+            },
+            {
+              "name": "needed_by",
+              "description": "Delivery deadline as YYYY-MM-DD, year 2026. Empty if no date is given."
+            },
+            {
+              "name": "language",
+              "description": "One of: English, Russian, Hebrew, Other"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.informationExtractor",
+      "typeVersion": 1.2,
+      "position": [
+        272,
+        -272
+      ],
+      "id": "149af579-8b4a-480f-beb2-394521924618",
+      "name": "Information Extractor"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "claude-haiku-5-5",
+          "mode": "list",
+          "cachedResultName": "Claude Haiku 5.5"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.5,
+      "position": [
+        272,
+        -96
+      ],
+      "id": "45b8c3a7-0775-4bc7-8458-ae2fd9e6b7fd",
+      "name": "Anthropic Chat Model",
+      "credentials": {
+        "anthropicApi": {
+          "id": "NG1sUbHipQmf1noY",
+          "name": "Anthropic account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "2e14c71e-bb5f-4294-adde-78fdc2875d89",
+              "leftValue": "={{ $json.output.is_enquiry }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        624,
+        -272
+      ],
+      "id": "76fb6271-f7ba-4438-819a-47cc973369df",
+      "name": "Is enquiry?"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d3086eb5-a022-40c0-8e7b-3a0ff5322e92",
+              "name": "status",
+              "value": "={{ ($json.output.needed_by ?? \"\") === \"\" ? \"missing date\" : \"new\" }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        848,
+        -352
+      ],
+      "id": "37682c4f-6d26-45bc-abfc-e6dd81e2959b",
+      "name": "Set status"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1qPKgEo1pcgc-BUtC3CPRDDhHx9i59ov9I5DRmhcvW5A",
+          "mode": "list",
+          "cachedResultName": "Enquires",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1qPKgEo1pcgc-BUtC3CPRDDhHx9i59ov9I5DRmhcvW5A/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1qPKgEo1pcgc-BUtC3CPRDDhHx9i59ov9I5DRmhcvW5A/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "received": "={{ $('Keep 4 fields').item.json.received }}",
+            "from": "={{ $('Keep 4 fields').item.json.from }}",
+            "subject": "={{ $('Keep 4 fields').item.json.subject }}",
+            "company": "={{ $json.output.company ?? \"\"}}",
+            "contact_name": "={{ $json.output.contact_name ?? \"\" }}",
+            "items": "={{ $json.output.items ?? \"\" }}",
+            "needed_by": "={{ $json.output.needed_by ?? \"\" }}",
+            "language": "={{ $json.output.language }}",
+            "status": "={{ $json.status }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "received",
+              "displayName": "received",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "from",
+              "displayName": "from",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "subject",
+              "displayName": "subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "company",
+              "displayName": "company",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "contact_name",
+              "displayName": "contact_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "items",
+              "displayName": "items",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "needed_by",
+              "displayName": "needed_by",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "language",
+              "displayName": "language",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1072,
+        -352
+      ],
+      "id": "bae117dd-cabe-4952-b863-6c9b65497e9f",
+      "name": "Add to Enquiries",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "rAicrH8aF7JHca3u",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $('Get many messages').item.json.id }}",
+        "labelIds": [
+          "Label_1213899992082060961"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1296,
+        -352
+      ],
+      "id": "f368e733-bcbd-4e9d-9e1c-bd711511395b",
+      "name": "Add label to message",
+      "webhookId": "01c30d08-58e2-4b6f-9bee-2d8383cdb593",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "uyAjPR91JmMlCxAP",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $('Get many messages').item.json.id }}",
+        "labelIds": [
+          "Label_1213899992082060961"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        848,
+        -176
+      ],
+      "id": "bf580a3f-cf1a-49a2-8e7a-3b63717a1df6",
+      "name": "Mark not enquiry",
+      "webhookId": "4575c475-b539-401a-aeeb-d95f4632e4ad",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "uyAjPR91JmMlCxAP",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get many messages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many messages": {
+      "main": [
+        [
+          {
+            "node": "Keep 4 fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Keep 4 fields": {
+      "main": [
+        [
+          {
+            "node": "Information Extractor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Information Extractor",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Information Extractor": {
+      "main": [
+        [
+          {
+            "node": "Is enquiry?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is enquiry?": {
+      "main": [
+        [
+          {
+            "node": "Set status",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Mark not enquiry",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set status": {
+      "main": [
+        [
+          {
+            "node": "Add to Enquiries",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add to Enquiries": {
+      "main": [
+        [
+          {
+            "node": "Add label to message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "2859cc7c-618f-41b2-82bb-7b179847c7b8",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0f3be1b21e9d7ac0c9038ef4777ded591b0e44acdbcf2fd9889167ece4127673"
+  },
+  "nodeGroups": [],
+  "id": "FJqyPcq5xtNuexe7",
+  "tags": []
+}
